@@ -1,19 +1,20 @@
 import sys
 
-# 1. Import `QApplication` and all the required widgets
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtWidgets import QWidget
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = QWidget()
-    window.setWindowTitle('PyQt5 App')
-    window.setGeometry(100, 100, 280, 80)
-    window.move(60, 15)
-    helloMsg = QLabel('<h1>Hello World!</h1>', parent=window)
-    helloMsg.move(60, 15)
+class PyQtApp(QtWidgets.QWidget):
 
-    window.show()
+    def __init__(self, parent=None):
+        QtWidgets.QWidget.__init__(self, parent)
+        self.setWindowTitle("PyQt Application")
+        self.setWindowIcon(QtGui.QIcon("/image/file.png"))
+
+
+if __name__ == "__main__":
+    import sys
+
+    app = QtWidgets.QApplication(sys.argv)
+    myapp = PyQtApp()
+    myapp.show()
     sys.exit(app.exec_())
