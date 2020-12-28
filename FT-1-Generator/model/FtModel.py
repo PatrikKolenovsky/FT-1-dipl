@@ -4,7 +4,7 @@ import cv2 as cv
 from ..configuration.config import config
 import time
 from scipy.io import wavfile
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 
 
 class FtModel:
@@ -68,39 +68,39 @@ class FtModel:
         wavfile.write(outputFileName, self.rate, transformedInput)
         print("File ", outputFileName, " been created")
 
-    def plotFile(self, inputFileName, color):
-        samplerate, data = wavfile.read(inputFileName)
-        times = np.arange(len(data)) / float(samplerate)
-        plt.figure(figsize=(10, 8))
-        plt.fill_between(times, data[:, 0], data[:, 1], color=color)
-        plt.xlim(times[0], times[-1])
-        plt.xlabel('time (s)')
-        plt.ylabel('amplitude')
-        plt.savefig('plot.png', dpi=100)
-        plt.show()
-
-    def plotCompareFileData(self, fileName1, fileName2, start, end):
-        samplerate, data = wavfile.read(fileName1)
-        index = 1
-        plotDataX1 = []
-        plotDataY1 = []
-        plotDataX2 = []
-        plotDataY2 = []
-
-        print(data)
-        for sample in data:
-            if (index > start and index < end):
-                plotDataX1.append(sample[0])
-                plotDataY1.append(sample[1])
-            index = index + 1
-
-        index = 1
-        samplerate, data = wavfile.read(fileName2)
-        for sample in data:
-            if (index > start and index < end):
-                plotDataX2.append(sample[0])
-                plotDataY2.append(sample[1])
-            index = index + 1
-        index = 0
-        intervalSize = end - start
-        print(data)
+    # def plotFile(self, inputFileName, color):
+    #     samplerate, data = wavfile.read(inputFileName)
+    #     times = np.arange(len(data)) / float(samplerate)
+    #     plt.figure(figsize=(10, 8))
+    #     plt.fill_between(times, data[:, 0], data[:, 1], color=color)
+    #     plt.xlim(times[0], times[-1])
+    #     plt.xlabel('time (s)')
+    #     plt.ylabel('amplitude')
+    #     plt.savefig('plot.png', dpi=100)
+    #     plt.show()
+    #
+    # def plotCompareFileData(self, fileName1, fileName2, start, end):
+    #     samplerate, data = wavfile.read(fileName1)
+    #     index = 1
+    #     plotDataX1 = []
+    #     plotDataY1 = []
+    #     plotDataX2 = []
+    #     plotDataY2 = []
+    #
+    #     print(data)
+    #     for sample in data:
+    #         if (index > start and index < end):
+    #             plotDataX1.append(sample[0])
+    #             plotDataY1.append(sample[1])
+    #         index = index + 1
+    #
+    #     index = 1
+    #     samplerate, data = wavfile.read(fileName2)
+    #     for sample in data:
+    #         if (index > start and index < end):
+    #             plotDataX2.append(sample[0])
+    #             plotDataY2.append(sample[1])
+    #         index = index + 1
+    #     index = 0
+    #     intervalSize = end - start
+    #     print(data)
