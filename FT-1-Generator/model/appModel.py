@@ -4,10 +4,8 @@ import cv2 as cv
 from ..configuration.config import config
 import time
 from scipy.io import wavfile
-# from matplotlib import pyplot as plt
 
-
-class FtModel:
+class Model:
     dtype = config.DTYPE
     channels = config.CHANNELS
     rate = config.RATE
