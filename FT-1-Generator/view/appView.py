@@ -1,10 +1,11 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLineEdit, QLabel, QGridLayout, QPushButton, QMainWindow, QVBoxLayout, QWidget, QSlider
+from configuration.config import settings
 
 
 class View(QMainWindow):
-    """PyCalc's View (GUI)."""
+    """App's View (GUI)."""
 
     def __init__(self):
         """View initializer."""
@@ -20,14 +21,15 @@ class View(QMainWindow):
         # Create the display and the buttons
         self._createDirectories()
         self._createSlide()
+        self._createImage()
         self._createButtons()
 
     # Snip
     def _createDirectories(self):
-        """Create the buttons."""
+        """Create the dirs."""
         self.directories = {}
         buttonsLayout = QGridLayout()
-        # Button text | position on the QGridLayout
+        # Dir text | position on the QGridLayout
         directories = {
             '<h3>Input file:</h3>': (0, 0),
             'inputFileDir': (0, 1),
@@ -36,8 +38,13 @@ class View(QMainWindow):
         }
         # Create the buttons and add them to the grid layout
         for btnText, pos in directories.items():
-            if btnText == 'inputFileDir' or btnText == 'outputFileDir':
-                self.directories[btnText] = QLineEdit()
+            if btnText == 'inputFileDir':
+                # settings.ROOT + "/files/"
+                self.directories[btnText] = QLineEdit(settings.ROOT + "/files/sine.wav")
+                self.directories[btnText].setFixedSize(180, 30)
+            elif btnText == 'outputFileDir':
+                # settings.ROOT + "/files/"
+                self.directories[btnText] = QLineEdit(settings.ROOT + "/files/output.wav")
                 self.directories[btnText].setFixedSize(180, 30)
             else:
                 self.directories[btnText] = QLabel()
@@ -49,17 +56,12 @@ class View(QMainWindow):
         self.generalLayout.addLayout(buttonsLayout)  # Snip
 
     def _createButtons(self):
-        self.buttons = {}
         buttonsLayout = QGridLayout()
-        # Button text | position on the QGridLayout
-        buttons = {
-            'Generate': (0, 1),
-        }
-        # Create the buttons and add them to the grid layout
-        for btnText, pos in buttons.items():
-            self.buttons[btnText] = QPushButton(btnText)
-            self.buttons[btnText].setFixedSize(100, 60)
-            buttonsLayout.addWidget(self.buttons[btnText], pos[0], pos[1])
+
+        self.btn = QPushButton('Generate')
+        self.btn.setFixedSize(100, 60)
+        buttonsLayout.addWidget(self.btn)
+
         # Add buttonsLayout to the general layout
         self.generalLayout.addLayout(buttonsLayout)
 
@@ -91,22 +93,43 @@ class View(QMainWindow):
         self.slider.valueChanged.connect(self.updateLabel)
         slideLayout.addWidget(self.slider, 1, 0)
 
-
         # Add buttonsLayout to the general layout
         self.generalLayout.addLayout(slideLayout)
+
+    def _createImage(self):
+        # Create input image
+        self.image1 = QLabel()
+        pixmap = QPixmap( settings.ROOT + "/image/404.png")
+        self.image1.setPixmap(pixmap)
+        self.image1.setAlignment(Qt.AlignRight)
+        # self.image1..setFixedSize(250, 250)
+
+        # Create input image
+        self.image2 = QLabel()
+        pixmap = QPixmap( settings.ROOT + "/image/404.png")
+        self.image2.setPixmap(pixmap)
+        self.image2.setAlignment(Qt.AlignLeft)
+        # self.image1..setFixedSize(250, 250)
+
+
+        imageLayout = QGridLayout()
+        imageLayout.addWidget(self.image1, 0, 0)
+        imageLayout.addWidget(self.image2, 0, 0)
+
+        self.generalLayout.addLayout(imageLayout)
 
     def updateLabel(self, value):
         self.slideValueLabel.setText('<h3>' + str(value) + '</h3>')
 
-    def setDisplayText(self, text):
-        """Set display's text."""
-        self.display.setText(text)
-        self.display.setFocus()
+    # def setDisplayText(self, text):
+    #     """Set display's text."""
+    #     self.display.setText(text)
+    #     self.display.setFocus()
 
-    def displayText(self):
-        """Get display's text."""
-        return self.display.text()
-
-    def clearDisplay(self):
-        """Clear the display."""
-        self.setDisplayText('')
+    # def displayText(self):
+    #     """Get display's text."""
+    #     return self.display.text()
+    #
+    # def clearDisplay(self):
+    #     """Clear the display."""
+    #     self.setDisplayText('')

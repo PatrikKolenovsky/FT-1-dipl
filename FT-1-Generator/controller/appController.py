@@ -1,7 +1,7 @@
 ERROR_MSG = 'ERROR'
 
 class Controller:
-    """PyCalc's Controller."""
+    """App's Controller."""
 
     def __init__(self, model, view):
         """Controller initializer."""

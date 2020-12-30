@@ -1,14 +1,14 @@
 import pyaudio
 import numpy as np
 import cv2 as cv
-from ..configuration.config import config
+from ..configuration.config import settings
 import time
 from scipy.io import wavfile
 
 class Model:
-    dtype = config.DTYPE
-    channels = config.CHANNELS
-    rate = config.RATE
+    dtype = settings.DTYPE
+    channels = settings.CHANNELS
+    rate = settings.RATE
     kernel = cv.ft.createKernel(cv.ft.LINEAR, 1, 1)
 
     def printConfiguration(self):
