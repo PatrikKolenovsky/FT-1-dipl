@@ -74,6 +74,12 @@ class View(QMainWindow):
         self.slideLabel.setFixedSize(680, 30)
         slideLayout.addWidget(self.slideLabel, 0, 0)
 
+        # Value Label
+        self.slideValueLabel = QLabel()
+        self.slideValueLabel.setText('<h3>5</h3>')
+        self.slideValueLabel.setFixedSize(30, 30)
+        slideLayout.addWidget(self.slideValueLabel, 2, 0)
+
         # Slider
         self.slider = QSlider(Qt.Horizontal)
         self.slider.setMinimum(1)
@@ -82,15 +88,15 @@ class View(QMainWindow):
         self.slider.setTickPosition(QSlider.TicksBelow)
         self.slider.setTickInterval(1)
         self.slider.setFixedSize(310, 30)
+        self.slider.valueChanged.connect(self.updateLabel)
         slideLayout.addWidget(self.slider, 1, 0)
 
 
         # Add buttonsLayout to the general layout
         self.generalLayout.addLayout(slideLayout)
 
-    def valuechange(self):
-        size = self.sl.value()
-        self.l1.setFont(QFont("Arial", size))
+    def updateLabel(self, value):
+        self.slideValueLabel.setText('<h3>' + str(value) + '</h3>')
 
     def setDisplayText(self, text):
         """Set display's text."""
