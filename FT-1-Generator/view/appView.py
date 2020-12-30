@@ -18,7 +18,7 @@ class View(QMainWindow):
         self._centralWidget = QWidget(self)
         self.setCentralWidget(self._centralWidget)
         self._centralWidget.setLayout(self.generalLayout)
-        # Create the display and the buttons
+
         self._createDirectories()
         self._createSlide()
         self._createImage()
@@ -58,9 +58,9 @@ class View(QMainWindow):
     def _createButtons(self):
         buttonsLayout = QGridLayout()
 
-        self.btn = QPushButton('Generate')
-        self.btn.setFixedSize(100, 60)
-        buttonsLayout.addWidget(self.btn)
+        self.generateBtn = QPushButton('Generate')
+        self.generateBtn.setFixedSize(100, 60)
+        buttonsLayout.addWidget(self.generateBtn)
 
         # Add buttonsLayout to the general layout
         self.generalLayout.addLayout(buttonsLayout)

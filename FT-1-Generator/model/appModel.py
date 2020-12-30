@@ -1,71 +1,68 @@
 import pyaudio
 import numpy as np
 import cv2 as cv
-from ..configuration.config import settings
-import time
+from PyQt5.QtCore import QMutex
+
+from configuration.config import settings
 from scipy.io import wavfile
 
-class Model:
-    dtype = settings.DTYPE
-    channels = settings.CHANNELS
-    rate = settings.RATE
-    kernel = cv.ft.createKernel(cv.ft.LINEAR, 1, 1)
 
-    def printConfiguration(self):
-        print("Data type: ", self.dtype, " Channels: ", self.channels, " Rate: ", self.rate)
+class FtModel:
+    def __init__(self):
+        self.dtype = settings.DTYPE
+        self.channels = settings.CHANNELS
+        self.rate = settings.RATE
+        self.kernel = cv.ft.createKernel(cv.ft.LINEAR, 1, 1)
+        self.serialEnabled = True
 
     def callback(self, in_data, frame_count, time_info, flag):
-        return in_data, pyaudio.paContinue
-
-    def callbackFTransform(self, in_data, frame_count, time_info, flag):
         audio_data = np.frombuffer(in_data, self.dtype)
         audio_data = cv.ft.FT02D_process(audio_data, self.kernel)
         output = audio_data
         return output, pyaudio.paContinue
 
-    def openStream(self, useFTransform, openingTime, maskSize, channels):
-        if (useFTransform == True):
-            callback = self.callbackFTransform
-            self.setKernel(maskSize, channels)
-            print("using F-transform")
-        else:
-            callback = self.callback
-            print("basic I/O only")
-
-        print("opening the stream")
-        p = pyaudio.PyAudio()
-        stream = p.open(format=pyaudio.paFloat32,
-                        channels=self.channels,
-                        rate=self.rate,
-                        output=True,
-                        input=True,
-                        stream_callback=self.callbackFTransform)
-        stream.start_stream()
-
-        while stream.is_active():
-            print("Stream started")
-            time.sleep(openingTime)
-            stream.stop_stream()
-            print("Stream stoped")
-        stream.close()
-
     def setKernel(self, maskSize, channels):
         self.kernel = cv.ft.createKernel(cv.ft.LINEAR, maskSize, channels)
-        print("new kernel with mask size ", maskSize, " has been initialized")
 
-    def printKernel(self):
-        print(self.kernel)
-
-    def transformFileByFTransform(self, inputFileName, outputFileName, maskSize, channels):
-        self.setKernel(maskSize, channels)
-        self.rate, input_sig = wavfile.read(inputFileName)
+    def transform(self, inputFileDir, outputFileDir, maskSize):
+        # Set kernel with maskSize
+        self.setKernel(maskSize, self.channels)
+        # Retype file to numpy
+        self.rate, input_sig = wavfile.read(inputFileDir)
         np_sig = input_sig
         np_sig = np_sig.astype(float)
+
         transformedInput = cv.ft.FT02D_process(np_sig, self.kernel)
         transformedInput = np.int16(transformedInput)
-        wavfile.write(outputFileName, self.rate, transformedInput)
-        print("File ", outputFileName, " been created")
+        print("file processed")
+        # Save file
+        print("saving file")
+        wavfile.write(outputFileDir, self.rate, transformedInput)
 
+    # def openStream(self, openingTime, maskSize, channels):
+    #     self.setKernel(maskSize, channels)
+    #
+    #     # opening the stream
+    #     p = pyaudio.PyAudio()
+    #     stream = p.open(format=pyaudio.paFloat32,
+    #                     channels=self.channels,
+    #                     rate=self.rate,
+    #                     output=True,
+    #                     input=True,
+    #                     stream_callback=self.callback)
+    #     stream.start_stream()
+    #
+    #     while stream.is_active():
+    #         print("Stream started")
+    #         time.sleep(openingTime)
+    #         stream.stop_stream()
+    #         print("Stream stoped")
+    #     stream.close()
+
+    # def printConfiguration(self):
+    #     print("Data type: ", self.dtype, " Channels: ", self.channels, " Rate: ", self.rate)
+    # def printKernel(self):
+    #     print(self.kernel)
     # def plotFile(self, inputFileName, color):
     #     samplerate, data = wavfile.read(inputFileName)
     #     times = np.arange(len(data)) / float(samplerate)
