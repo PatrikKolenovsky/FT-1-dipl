@@ -95,7 +95,7 @@ class View(QMainWindow):
         # Slider
         self.slider = QSlider(Qt.Horizontal)
         self.slider.setMinimum(1)
-        self.slider.setMaximum(10)
+        self.slider.setMaximum(20)
         self.slider.setValue(5)
         self.slider.setTickPosition(QSlider.TicksBelow)
         self.slider.setTickInterval(1)

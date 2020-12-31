@@ -1,13 +1,29 @@
+import wave
+
+import librosa
+import mean as mean
 import pyaudio
 import numpy as np
 import cv2 as cv
-from PyQt5.QtCore import QMutex
+from scipy.io import wavfile
 
 from configuration.config import settings
-from scipy.io import wavfile
+import matplotlib.pyplot as plt
+from scipy import signal
+from scipy.io import wavfile as wav
+from numpy.lib import stride_tricks
 
 
 class FtModel:
+    sampling_rate = 44100
+    duration = 2
+    hop_length = 347 * duration  # to make time steps 128
+    fmin = 20
+    fmax = sampling_rate // 2
+    n_mels = 128
+    n_fft = n_mels * 20
+    samples = sampling_rate * duration
+
     def __init__(self):
         self.dtype = settings.DTYPE
         self.channels = settings.CHANNELS
@@ -37,63 +53,14 @@ class FtModel:
         wavfile.write(outputFileDir, self.rate, transformedInput)
         return "file was created at " + outputFileDir
 
-    # def openStream(self, openingTime, maskSize, channels):
-    #     self.setKernel(maskSize, channels)
-    #
-    #     # opening the stream
-    #     p = pyaudio.PyAudio()
-    #     stream = p.open(format=pyaudio.paFloat32,
-    #                     channels=self.channels,
-    #                     rate=self.rate,
-    #                     output=True,
-    #                     input=True,
-    #                     stream_callback=self.callback)
-    #     stream.start_stream()
-    #
-    #     while stream.is_active():
-    #         print("Stream started")
-    #         time.sleep(openingTime)
-    #         stream.stop_stream()
-    #         print("Stream stoped")
-    #     stream.close()
+    def createImageFromSound(self, fileDir, fileName):
+        # plt.subplot(9, 1, i + 1)
+        # Read the wave file to numpy array
+        samplerate, sound = wavfile.read(fileDir)
+        partSound = []
+        i = 1
+        for x in range(600):
+            partSound.append(sound[x])
 
-    # def printConfiguration(self):
-    #     print("Data type: ", self.dtype, " Channels: ", self.channels, " Rate: ", self.rate)
-    # def printKernel(self):
-    #     print(self.kernel)
-    # def plotFile(self, inputFileName, color):
-    #     samplerate, data = wavfile.read(inputFileName)
-    #     times = np.arange(len(data)) / float(samplerate)
-    #     plt.figure(figsize=(10, 8))
-    #     plt.fill_between(times, data[:, 0], data[:, 1], color=color)
-    #     plt.xlim(times[0], times[-1])
-    #     plt.xlabel('time (s)')
-    #     plt.ylabel('amplitude')
-    #     plt.savefig('plot.png', dpi=100)
-    #     plt.show()
-    #
-    # def plotCompareFileData(self, fileName1, fileName2, start, end):
-    #     samplerate, data = wavfile.read(fileName1)
-    #     index = 1
-    #     plotDataX1 = []
-    #     plotDataY1 = []
-    #     plotDataX2 = []
-    #     plotDataY2 = []
-    #
-    #     print(data)
-    #     for sample in data:
-    #         if (index > start and index < end):
-    #             plotDataX1.append(sample[0])
-    #             plotDataY1.append(sample[1])
-    #         index = index + 1
-    #
-    #     index = 1
-    #     samplerate, data = wavfile.read(fileName2)
-    #     for sample in data:
-    #         if (index > start and index < end):
-    #             plotDataX2.append(sample[0])
-    #             plotDataY2.append(sample[1])
-    #         index = index + 1
-    #     index = 0
-    #     intervalSize = end - start
-    #     print(data)
+        plt.plot(partSound)
+        plt.savefig(settings.ROOT + "/image/" + fileName + ".png")

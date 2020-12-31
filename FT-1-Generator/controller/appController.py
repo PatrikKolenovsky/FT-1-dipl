@@ -20,3 +20,5 @@ class Controller:
         maskSize = self._view.slider.value()
 
         self._view.setFileLabelText(self._ftModel.transform(input, output, maskSize))
+        self._ftModel.createImageFromSound(input, "input")
+        self._ftModel.createImageFromSound(output, "output")
