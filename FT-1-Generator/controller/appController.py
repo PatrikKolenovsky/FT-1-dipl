@@ -18,8 +18,5 @@ class Controller:
         input = self._view.directories['inputFileDir'].text()
         output = self._view.directories['outputFileDir'].text()
         maskSize = self._view.slider.value()
-        print(input)
-        print(output)
-        print(maskSize)
 
-        self._ftModel.transform(input, output, maskSize)
+        self._view.setFileLabelText(self._ftModel.transform(input, output, maskSize))

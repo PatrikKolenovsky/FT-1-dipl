@@ -34,10 +34,8 @@ class FtModel:
 
         transformedInput = cv.ft.FT02D_process(np_sig, self.kernel)
         transformedInput = np.int16(transformedInput)
-        print("file processed")
-        # Save file
-        print("saving file")
         wavfile.write(outputFileDir, self.rate, transformedInput)
+        return "file was created at " + outputFileDir
 
     # def openStream(self, openingTime, maskSize, channels):
     #     self.setKernel(maskSize, channels)

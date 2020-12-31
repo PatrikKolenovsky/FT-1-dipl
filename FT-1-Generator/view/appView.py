@@ -65,6 +65,16 @@ class View(QMainWindow):
         # Add buttonsLayout to the general layout
         self.generalLayout.addLayout(buttonsLayout)
 
+        # Label
+        labelLayout = QGridLayout()
+        self.fileLabel = QLabel()
+        self.fileLabel.setText("")
+        self.fileLabel.setAlignment(Qt.AlignCenter)
+        labelLayout.addWidget(self.fileLabel)
+
+        # Add buttonsLayout to the general layout
+        self.generalLayout.addLayout(labelLayout)
+
     def _createSlide(self):
         self.maskSize = 0
         self.maskSizeSlider = 0
@@ -121,10 +131,10 @@ class View(QMainWindow):
     def updateLabel(self, value):
         self.slideValueLabel.setText('<h3>' + str(value) + '</h3>')
 
-    # def setDisplayText(self, text):
-    #     """Set display's text."""
-    #     self.display.setText(text)
-    #     self.display.setFocus()
+    def setFileLabelText(self, text):
+        """Set display's text."""
+        self.fileLabel.setText(text)
+        self.fileLabel.setFocus()
 
     # def displayText(self):
     #     """Get display's text."""
