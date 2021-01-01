@@ -1,7 +1,3 @@
-import wave
-
-import librosa
-import mean as mean
 import pyaudio
 import numpy as np
 import cv2 as cv
@@ -9,9 +5,6 @@ from scipy.io import wavfile
 
 from configuration.config import settings
 import matplotlib.pyplot as plt
-from scipy import signal
-from scipy.io import wavfile as wav
-from numpy.lib import stride_tricks
 
 
 class FtModel:
@@ -54,8 +47,7 @@ class FtModel:
         return "file was created at " + outputFileDir
 
     def createImageFromSound(self, fileDir, fileName):
-        # plt.subplot(9, 1, i + 1)
-        # Read the wave file to numpy array
+        plt.figure(figsize=(4,3))
         samplerate, sound = wavfile.read(fileDir)
         partSound = []
         i = 1
@@ -63,4 +55,5 @@ class FtModel:
             partSound.append(sound[x])
 
         plt.plot(partSound)
+        # plt.figure(figsize=(250, 250))
         plt.savefig(settings.ROOT + "/image/" + fileName + ".png")

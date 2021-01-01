@@ -109,18 +109,17 @@ class View(QMainWindow):
     def _createImage(self):
         # Create input image
         self.image1 = QLabel()
-        pixmap = QPixmap( settings.ROOT + "/image/404.png")
+        pixmap = QPixmap(settings.ROOT + "/image/404.png")
         self.image1.setPixmap(pixmap)
         self.image1.setAlignment(Qt.AlignRight)
         # self.image1..setFixedSize(250, 250)
 
         # Create input image
         self.image2 = QLabel()
-        pixmap = QPixmap( settings.ROOT + "/image/404.png")
+        pixmap = QPixmap(settings.ROOT + "/image/404.png")
         self.image2.setPixmap(pixmap)
         self.image2.setAlignment(Qt.AlignLeft)
         # self.image1..setFixedSize(250, 250)
-
 
         imageLayout = QGridLayout()
         imageLayout.addWidget(self.image1, 0, 0)
@@ -128,18 +127,15 @@ class View(QMainWindow):
 
         self.generalLayout.addLayout(imageLayout)
 
+    def updateImages(self, imageName1, imageName2):
+        pixmap1 = QPixmap(settings.ROOT + "/image/" + imageName1)
+        self.image1.setPixmap(pixmap1)
+        pixmap2 = QPixmap(settings.ROOT + "/image/" + imageName2)
+        self.image2.setPixmap(pixmap2)
+
     def updateLabel(self, value):
         self.slideValueLabel.setText('<h3>' + str(value) + '</h3>')
 
     def setFileLabelText(self, text):
-        """Set display's text."""
         self.fileLabel.setText(text)
         self.fileLabel.setFocus()
-
-    # def displayText(self):
-    #     """Get display's text."""
-    #     return self.display.text()
-    #
-    # def clearDisplay(self):
-    #     """Clear the display."""
-    #     self.setDisplayText('')

@@ -22,3 +22,5 @@ class Controller:
         self._view.setFileLabelText(self._ftModel.transform(input, output, maskSize))
         self._ftModel.createImageFromSound(input, "input")
         self._ftModel.createImageFromSound(output, "output")
+
+        self._view.updateImages("output.png", "input.png")
