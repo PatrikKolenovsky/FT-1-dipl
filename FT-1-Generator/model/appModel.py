@@ -41,7 +41,7 @@ class FtModel:
         plt.figure(figsize=(4,3))
         samplerate, sound = wavfile.read(fileDir)
         partSound = []
-        for x in range(600):
+        for x in range(settings.NUMBER_OF_DISPLAYED_SAMPLES):
             partSound.append(sound[x])
 
         plt.plot(partSound)

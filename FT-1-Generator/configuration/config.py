@@ -7,3 +7,4 @@ class settings:
     RATE = 44100
     CHUNK = 1024
     ROOT = "D:/Python/FT-1-dipl/FT-1-Generator"
+    NUMBER_OF_DISPLAYED_SAMPLES = 600
