@@ -8,15 +8,6 @@ import matplotlib.pyplot as plt
 
 
 class FtModel:
-    sampling_rate = 44100
-    duration = 2
-    hop_length = 347 * duration  # to make time steps 128
-    fmin = 20
-    fmax = sampling_rate // 2
-    n_mels = 128
-    n_fft = n_mels * 20
-    samples = sampling_rate * duration
-
     def __init__(self):
         self.dtype = settings.DTYPE
         self.channels = settings.CHANNELS
@@ -30,12 +21,12 @@ class FtModel:
         output = audio_data
         return output, pyaudio.paContinue
 
-    def setKernel(self, maskSize, channels):
-        self.kernel = cv.ft.createKernel(cv.ft.LINEAR, maskSize, channels)
+    def setKernel(self, maskSize):
+        self.kernel = cv.ft.createKernel(cv.ft.LINEAR, maskSize,  self.channels)
 
     def transform(self, inputFileDir, outputFileDir, maskSize):
         # Set kernel with maskSize
-        self.setKernel(maskSize, self.channels)
+        self.setKernel(maskSize)
         # Retype file to numpy
         self.rate, input_sig = wavfile.read(inputFileDir)
         np_sig = input_sig
@@ -50,10 +41,8 @@ class FtModel:
         plt.figure(figsize=(4,3))
         samplerate, sound = wavfile.read(fileDir)
         partSound = []
-        i = 1
         for x in range(600):
             partSound.append(sound[x])
 
         plt.plot(partSound)
-        # plt.figure(figsize=(250, 250))
         plt.savefig(settings.ROOT + "/image/" + fileName + ".png")
