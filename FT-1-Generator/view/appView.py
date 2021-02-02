@@ -12,7 +12,7 @@ class View(QMainWindow):
         super().__init__()
         # Set some main window's properties
         self.setWindowTitle('FT-1 Generator')
-        self.setFixedSize(800, 600)
+        self.setFixedSize(1200, 1000)
         # Set the central widget and the general layout
         self.generalLayout = QVBoxLayout()
         self._centralWidget = QWidget(self)

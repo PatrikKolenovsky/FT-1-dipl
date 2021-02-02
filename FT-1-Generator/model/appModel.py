@@ -12,7 +12,6 @@ class FtModel:
         self.dtype = settings.DTYPE
         self.channels = settings.CHANNELS
         self.rate = settings.RATE
-        self.kernel = cv.ft.createKernel(cv.ft.LINEAR, 1, 1)
         self.serialEnabled = True
 
     def callback(self, in_data, frame_count, time_info, flag):
@@ -22,7 +21,25 @@ class FtModel:
         return output, pyaudio.paContinue
 
     def setKernel(self, maskSize):
-        self.kernel = cv.ft.createKernel(cv.ft.LINEAR, maskSize,  self.channels)
+        # self.kernel = cv.ft.createKernel(cv.ft.LINEAR, maskSize,  self.channels)
+        self.kernel = np.array([
+            [0, 0, 0, 0, 0],
+            [0, 1, 0, 1, 0],
+            [0, 0, 1, 0, 0],
+            [0, 1, 0, 1, 0],
+            [0, 0, 0, 0, 0]])
+        # Gaussian blur
+        # self.kernel = np.array([[1, 4, 6, 4, 1],
+        #                 [4, 16, 24, 16, 4],
+        #                 [6, 24, 36, 24, 6],
+        #                 [4, 16, 24, 16, 4],
+        #                 [1, 4, 6, 4, 1]])
+        # self.kernel = np.array([
+        #     [0, 0, 0, 0, 0],
+        #     [0, 1, 1, 1, 0],
+        #     [1, 1, 1, 1, 1],
+        #     [0, 1, 1, 1, 0],
+        #     [0, 0, 0, 0, 0]])
 
     def transform(self, inputFileDir, outputFileDir, maskSize):
         # Set kernel with maskSize
@@ -38,7 +55,7 @@ class FtModel:
         return "file was created at " + outputFileDir
 
     def createImageFromSound(self, fileDir, fileName):
-        plt.figure(figsize=(4,3))
+        plt.figure(figsize=(4, 3))
         samplerate, sound = wavfile.read(fileDir)
         partSound = []
         for x in range(settings.NUMBER_OF_DISPLAYED_SAMPLES):
