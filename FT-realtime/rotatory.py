@@ -1,14 +1,13 @@
-#KY040 Python Class
-#Martin O'Hanlon
-#stuffaboutcode.com
-
 import RPi.GPIO as GPIO
 from time import sleep
+import time
+import cv2 as cv
+
 
 class KY040:
     
     def __init__(self, name, clockPin, dataPin, rotaryCallback, counter, number_of_position):
-        #persist values
+        
         self.name = name
         self.clockPin = clockPin
         self.dataPin = dataPin
@@ -29,7 +28,6 @@ class KY040:
     def stop(self):
         GPIO.remove_event_detect(self.clockPin)
 
-    
     def _clockCallback(self, pin):
         if GPIO.input(self.clockPin) == 0:
             data = GPIO.input(self.dataPin)
@@ -43,14 +41,12 @@ class KY040:
                 if self.counter <= 0:
                     self.counter = self.number_of_position
                 self.rotaryCallback(self.name + " moved CLOCKWISE position " + str(self.counter))
-                
-
-
-#test
+    
 if __name__ == "__main__":
 
     def rotaryChange(direction):
-        print ("turned - " + str(direction))
+        print ("'\033[92m'turned - " + str(direction) + "'\033[0m'")
+
 
     GPIO.setmode(GPIO.BCM)
     CLOCKPIN1 = 5
@@ -66,10 +62,10 @@ if __name__ == "__main__":
     ky1.start()
     ky2.start()
 
-
     try:
         while True:
             sleep(0.1)
+
     finally:
-        ky040.stop()
         GPIO.cleanup()
+        print("exit")
