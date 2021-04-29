@@ -22,49 +22,49 @@ for x in range(100):
         sample.append(sound[x])
         mask.append(1)
 
-
-# Ploting mask
-plt.figure(figsize=(4, 3))
-plt.ylabel('loudness[dB]')
-plt.xlabel('number of samples')
-plt.plot(sample, label="original")
-plt.legend()
-plt.show()
-
-# Ploting mask
-plt.figure(figsize=(4, 3))
-plt.ylabel('loudness[dB]')
-plt.xlabel('number of samples')
-plt.plot(mask, label="original")
-plt.legend()
-plt.show()
-
-# Creating mask
-mask = np.array(mask)
-data = mask.astype(np.float32)
-write("mask.wav", samplerate, data)
+sample_dir = "sample.wav"
+mask_dir = "mask.wav"
 
 # Creating sample
 sample = np.array(sample)
 data = sample.astype(np.float32)
-write("sample.wav", samplerate, data)
+write(sample_dir, samplerate, data)
+
+# Creating mask
+mask = np.array(mask)
+data = mask.astype(np.uint8)
+write(mask_dir, samplerate, data)
 
 
+# Reading files for reconstruction
+samplerate, sample_file = wavfile.read(sample_dir)
+samplerate, mask_file = wavfile.read(mask_dir)
+
+# Ploting sample
+plt.figure(figsize=(4, 3))
+plt.ylabel('loudness[dB]')
+plt.xlabel('number of samples')
+plt.plot(sample_file, label="sample")
+plt.legend()
+# plt.show()
+
+# Ploting mask
+plt.figure(figsize=(4, 3))
+plt.ylabel('loudness[dB]')
+plt.xlabel('number of samples')
+plt.plot(mask_file, label="mask")
+plt.legend()
+# plt.show()
+
+# Reconstruction
 output = np.array([])
-cv.ft.inpaint(sample, mask, 2, cv.ft.LINEAR, cv.ft.ITERATIVE, output)
-# f1 = open("sample.wav", "x")
-# f1.write(sample)
-# f1.close()
-
-# Creating a mask
-# f2 = open("mask.wav", "x")
-# f2.write(mask)
-# f2.close()
-#
-# # Creating a mask
-# f2 = open("mask.wav", "x")
-# samplerate, maskSample = wavfile.read("mask.wav")
+output = cv.ft.inpaint(sample_file, mask_file, 3, cv.ft.LINEAR, cv.ft.ITERATIVE, output)
 
 
-
-
+# Ploting reconstruction
+plt.figure(figsize=(4, 3))
+plt.ylabel('loudness[dB]')
+plt.xlabel('number of samples')
+plt.plot(output, label="reconstructed")
+plt.legend()
+plt.show()
