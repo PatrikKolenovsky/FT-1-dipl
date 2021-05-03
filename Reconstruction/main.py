@@ -41,19 +41,17 @@ samplerate, sample_file = wavfile.read(sample_dir)
 samplerate, mask_file = wavfile.read(mask_dir)
 
 # Ploting sample
-plt.figure(figsize=(4, 3))
-plt.ylabel('loudness[dB]')
-plt.xlabel('number of samples')
-plt.plot(sample_file, label="sample")
-plt.legend()
+# plt.ylabel('loudness[dB]')
+# plt.xlabel('number of samples')
+# plt.plot(sample_file, label="sample wave")
+# plt.legend()
 # plt.show()
 
 # Ploting mask
-plt.figure(figsize=(4, 3))
-plt.ylabel('loudness[dB]')
-plt.xlabel('number of samples')
-plt.plot(mask_file, label="mask")
-plt.legend()
+# plt.ylabel('loudness[dB]')
+# plt.xlabel('number of samples')
+# plt.plot(mask_file, label="mask")
+# plt.legend()
 # plt.show()
 
 # Reconstruction
@@ -62,7 +60,6 @@ output = cv.ft.inpaint(sample_file, mask_file, 3, cv.ft.LINEAR, cv.ft.ITERATIVE,
 
 
 # Ploting reconstruction
-plt.figure(figsize=(4, 3))
 plt.ylabel('loudness[dB]')
 plt.xlabel('number of samples')
 plt.plot(output, label="reconstructed")
