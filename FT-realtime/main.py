@@ -1,6 +1,9 @@
+from ctypes import *
+
 import RPi.GPIO as GPIO
 from time import sleep
 import pyaudio
+from contextlib import contextmanager
 import numpy as np
 import math
 import time
@@ -18,6 +21,21 @@ CHANNELS = 1
 RATE = 44100
 KERNEL_TYPE = 1
 KERNEL_SIZE = 1
+
+
+ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
+
+def py_error_handler(filename, line, function, err, fmt):
+    pass
+
+c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
+
+@contextmanager
+def noalsaerr():
+    asound = cdll.LoadLibrary('libasound.so')
+    asound.snd_lib_error_set_handler(c_error_handler)
+    yield
+    asound.snd_lib_error_set_handler(None)
 
 class KY040:
      def __init__(self, name, clockPin, dataPin, rotaryCallback,
@@ -71,8 +89,8 @@ class KY040:
                  global KERNEL_TYPE
                  KERNEL_TYPE = self.counter
                  self.set_kernel()
-
-             self.p = pyaudio.PyAudio()
+             with noalsaerr():
+                self.p = pyaudio.PyAudio()
              self.stream = p.open(format=pyaudio.paFloat32,
                  channels=CHANNELS,
                  rate=RATE,
@@ -356,7 +374,9 @@ if __name__ == "__main__":
          output = audio_data * 3
          return output, pyaudio.paContinue
 
-     p = pyaudio.PyAudio()
+
+     with noalsaerr():
+        p = pyaudio.PyAudio()
      stream = p.open(format=pyaudio.paFloat32,
                      channels=CHANNELS,
                      rate=RATE,
