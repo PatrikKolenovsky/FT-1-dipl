@@ -260,8 +260,7 @@ def CREATE_KERNEL(KERNEL_TYPE, SIZE):
     return KERNEL
 
 
-def MULTILE_FT_Plot(TYPE):
-    input = "E:/School/DP/FT-1-dipl/FT-1-Generator/files/sine.wav"
+def MULTILE_FT_Plot(TYPE, input):
     rate, input_sig = wavfile.read(input)
     np_sig = input_sig
     np_sig = np_sig.astype(float)
@@ -282,7 +281,7 @@ def MULTILE_FT_Plot(TYPE):
 
     # print("plotting")
     # plt.figure(figsize=(4, 3))
-    directory = "E:/School/DP/FT-1-dipl/plot-files/"
+    directory = "E:/School/DP/FT-1-dipl/guitar-samples/"
     samplerate, sound = wavfile.read(input)
     partSound1 = []
     for x in range(100):
@@ -296,8 +295,8 @@ def MULTILE_FT_Plot(TYPE):
     for x in range(100):
         partSound3.append(TransformedInput2[x])
 
-    fileName1 = "TYPE-" + str(TYPE) + "-SIZE- " + str(SIZE1) + ".wav"
-    fileName2 = "TYPE-" + str(TYPE) + "-SIZE- " + str(SIZE2) + ".wav"
+    fileName1 = "GUITAR-SAMPLE-TYPE-" + str(TYPE) + "-SIZE-" + str(SIZE1) + ".wav"
+    fileName2 = "GUITAR-SAMPLE-TYPE-" + str(TYPE) + "-SIZE-" + str(SIZE2) + ".wav"
     wavfile.write(directory + fileName1,
                   44100, TransformedInput1)
     wavfile.write(directory + fileName2,
@@ -306,22 +305,22 @@ def MULTILE_FT_Plot(TYPE):
     # for x in range(100):
     #     partSound3.append(transformedInput2[x])
 
-    plt.figure(figsize=(9, 5))
-    plt.ylabel('loudness[dB]')
-    plt.xlabel('number of samples')
-    plt.plot(partSound1, label="original")
-    plt.plot(partSound2, 'red', label="kernel size " + str(SIZE1))
-    plt.plot(partSound3, 'orange', label="kernel size " + str(SIZE2))
-    imgName1 = "TYPE-" + str(TYPE) + ".png"
-    plt.savefig(imgName1)
-    plt.legend()
-    plt.show()
+    # plt.figure(figsize=(9, 5))
+    # plt.ylabel('loudness[dB]')
+    # plt.xlabel('number of samples')
+    # plt.plot(partSound1, label="original")
+    # plt.plot(partSound2, 'red', label="kernel size " + str(SIZE1))
+    # plt.plot(partSound3, 'orange', label="kernel size " + str(SIZE2))
+    # imgName1 = "TYPE-" + str(TYPE) + ".png"
+    # plt.savefig(imgName1)
+    # plt.legend()
+    # plt.show()
     # print("exit")
 
 
 if __name__ == '__main__':
     """Main function."""
-    MULTILE_FT_Plot(12)
+    # MULTILE_FT_Plot(12)
 
-    # for x in range(1, 12):
-    #     MULTILE_FT_Plot(x)
+    for x in range(1, 13):
+        MULTILE_FT_Plot(x, "E:/School/DP/FT-1-dipl/guitar-samples/sample-guitar.wav")

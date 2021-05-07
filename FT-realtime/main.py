@@ -368,7 +368,7 @@ if __name__ == "__main__":
      CLOCKPIN1 = 5
      DATAPIN1 = 6
      SWITCHPIN1 = 13
-     ky1 = KY040("KY1 ", CLOCKPIN1, DATAPIN1, rotaryChange, stream, 1, 15, "TYPE", default_kernel, p)
+     ky1 = KY040("KY1 ", CLOCKPIN1, DATAPIN1, rotaryChange, stream, 1, 12, "TYPE", default_kernel, p)
 
      CLOCKPIN2 = 21
      DATAPIN2 = 16
